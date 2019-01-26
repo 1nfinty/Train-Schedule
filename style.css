@@ -1,0 +1,26 @@
+*{
+    box-sizing: border-box;
+}
+body{
+    background-image: url(https://cache.radissonhotels.com/galleries/radblu/photos/webextra/BkgrndImg1.jpg);
+   /* Full height */
+  height: 100%; 
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.container{
+    width: 70%;
+}
+.jumbotron{
+    color: azure;
+    text-align: center;
+    background-image: url(https://prod-discovery.edx-cdn.org/media/course/image/82619fc4-74cd-4788-a873-4e7c11b7b288-bde82266f709.jpg);
+}
+.table{
+    color: azure;
+}
+.form-group{
+    color: azure;
+}

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Train Schedule</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <script src="https://www.gstatic.com/firebasejs/5.8.0/firebase.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.23.0/moment.js"></script>
+    <link rel="stylesheet" type="text/css" href="assets/style.css">
+    
+<body>
+    <div class="container">
+        <div class="jumbotron">
+                <h1 class="display-4">HYPERLOOP X</h1>
+                <p class="lead">Connecting the World.</p>
+                <hr class="my-4">
+                <p>Stay in the Loop with the Schedule below.</p>
+        </div>
+
+        <table class="table">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">Train Name</th>
+                    <th scope="col">Destination</th>
+                    <th scope="col">Frequency</th>
+                    <th scope="col">Next Train</th>
+                    <th scope="col">Minutes Away</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">The Schwarzenegger Express</th>
+                    <td>Los Angeles</td>
+                    <td>15 Minutes</td>
+                    <td>time of next train</td>
+                    <td>Minutes away</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Liberty Express</th>
+                    <td>NYC</td>
+                    <td>10 Minutes</td>
+                    <td>time of next train</td>
+                    <td>Minutes away</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Apollo Limited</th>
+                    <td>Houston</td>
+                    <td>5 Minutes</td>
+                    <td>time of next train</td>
+                    <td>Minutes away</td>
+                  </tr>
+                </tbody>
+        </table>
+              
+        <form>
+                <div class="form-group">
+                  <label for="train-name">Train Name</label>
+                  <input type="name" class="form-control" id="train-name" aria-describedby="name-input" placeholder="New Train">
+                </div>
+                <div class="form-group">
+                  <label for="destination">Destination</label>
+                  <input type="destination-input" class="form-control" id="destination" placeholder="New Destination">
+                </div>
+                <div class="form-group">
+                  <label for="first-depature">First Depature</label>
+                  <input type="initial-time-input" class="form-control" id="initial-time" placeholder="Military Time">
+                </div>
+                <div class="form-group">
+                  <label for="frequency">Frequency</label>
+                  <input type="frequency-input" class="form-control" id="frequency" placeholder="Minutes">
+                  <br>
+                  <button type="submit" id="add-train" class="btn btn-primary">Submit</button>
+                </div>
+        </form>
+    </div>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyBE-_plBWK8Asr3BJdgjDLnwF8g3keLcw4",
+    authDomain: "hyper-loop-train.firebaseapp.com",
+    databaseURL: "https://hyper-loop-train.firebaseio.com",
+    projectId: "hyper-loop-train",
+    storageBucket: "hyper-loop-train.appspot.com",
+    messagingSenderId: "748117738973"
+  };
+  firebase.initializeApp(config);
+
+  var database = firebase.database();
+
+  database.ref().on('child_added', function(childSnapshot){
+    
+    var childName = (childSnapshot.val().name);
+    var childDestination = (childSnapshot.val().destination);
+    var childDeparture = (childSnapshot.val().departure);
+    var childFrequency = (childSnapshot.val().frequency);
+    console.log(childName)
+
+    // moment functions not finsihed
+    // need a variable to state next train arrival time given first dearture, local time, and the frequncey
+    // need a variable to state the countdown of minutes to arrival given arrival time minus the frequnecy
+    // var difference = moment().diff(moment(childDeparture)% childFrequency);
+    // var timeRemain = moment() - childFrequency;
+    // ????????????????????????????????????????????
+    // unable to get format into military time
+    // 1st attempt = result next train in 1819 years
+    // 2nd attempt = result next train in 18 years
+    // 3rd attempt = result next train at 0600
+      
+    var newTableRow = $('<tr>')// create new row with the follow data
+
+    newTableRow.append('<td>' + childName + '</td>') 
+    newTableRow.append('<td>' + childDestination + '</td>')
+    newTableRow.append('<td>' + childFrequency + " minutes" + '</td>')
+    // newTableRow.append('<td>' + nextTrain + '</td>')
+    // newTableRow.append('<td>' + minutesAway + '</td>')
+    
+    $('.table').append(newTableRow) // add new table row to pre-existing table class
+  });
+
+  $("#add-train").on("click",function(event){
+    event.preventDefault();
+    // pull user input from html
+    var name = $("#train-name").val().trim();   
+    var destination = $("#destination").val().trim();       
+    var departure =  $("#initial-time").val().trim();
+    var frequency =  $("#frequency").val().trim();
+  
+  database.ref().push({// push variables with properties to firebase
+    name: name,
+    destination: destination,
+    departure: departure,
+    frequency: frequency
+  })
+});
+
+</script>
+</body>
+</html>
